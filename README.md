@@ -1,15 +1,28 @@
-# Projeto React - POS 2026
+# Clínica Veterinária
 
-Nesse projeto vocês deverão criar clientes web com React (JS) para a API de Agendamentos da disciplina.
+## Descrição
+Sistema web para gestão de clínica veterinária, permitindo o acompanhamento e agendamento de consultas, visualização de serviços/profissionais e painel administrativo para gerenciamento dos atendimentos.
 
-## Instruções
+## Objetivo
+Permitir que o cliente web consuma a API de agendamentos do projeto Clínica Veterinária, oferecendo uma interface profissional e responsiva para pacientes/clientes e administradores.
 
-- Criem um fork desse repositório (um por grupo). No momento da criação do fork mudem o nome do repositório para o nome do cliente de vocês. Lembrem-se de mudar também o nome no `package.json`.
-- Na pasta `docs/` estão as especificações para cada projeto, siga o destinado ao seu grupo.
-- No GSA foi enviada a lista dos grupos com usuários admin e senhas. Recomendo que mudem as senhas assim que tiverem acesso.
-- Todos os participantes devem ter commits no repositóro.
-- Substituam esse `README.md` com informações do seu projeto.
-- Usem o projeto da [Escola de Música](https://pos-escola-de-musica-web.vercel.app/) como referência [GitHub](https://github.com/dvcirilo-ifrn/pos-escola-de-musica-web)
-- O projeto deve ser hospedado no [Vercel](https://vercel.com/).
-- Na data da entrega o projeto deverá ser demonstrado diretamente do Vercel e serão feitas perguntas referentes à implementação.
-- *Data de entrega*: 16/10/2026
+## Tecnologias Utilizadas
+- React 19[cite: 6]
+- Vite[cite: 6]
+- JavaScript[cite: 4]
+- React Router[cite: 6]
+- Oxlint[cite: 6]
+- Vercel[cite: 9]
+
+## Funcionalidades
+- Autenticação e perfil do usuário
+- Agendamento e histórico de consultas
+- Visualização de serviços e profissionais veterinários
+- Painel administrativo para gestão de agenda e solicitações
+- Integração com a API de agendamentos
+
+## Estrutura Básica do Projeto
+- `src/` - Código-fonte da aplicação (componentes, rotas e páginas)[cite: 4]
+- `index.html` - Ponto de entrada HTML da aplicação[cite: 4]
+- `package.json` - Dependências e scripts do projeto[cite: 6]
+- `vercel.json` - Configuração para rotas no deploy da Vercel[cite: 9]
