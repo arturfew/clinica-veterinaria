@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 330">
+  <circle cx="200" cy="105" r="95" fill="#0a2f5f"/>
+  <g fill="#f89800">
+    <ellipse cx="200" cy="133" rx="37" ry="30"/>
+    <ellipse cx="153" cy="96" rx="14" ry="18.5" transform="rotate(-25 153 96)"/>
+    <ellipse cx="181" cy="65" rx="14" ry="20"/>
+    <ellipse cx="219" cy="65" rx="14" ry="20"/>
+    <ellipse cx="247" cy="96" rx="14" ry="18.5" transform="rotate(25 247 96)"/>
+  </g>
+  <path d="M200 121v24M188 133h24" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  <g font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" fill="#0a2f5f">
+    <text x="200" y="248" font-size="34" letter-spacing="6">CLÍNICA</text>
+    <text x="200" y="290" font-size="38" font-weight="700" letter-spacing="2">VETERINÁRIA</text>
+    <text x="200" y="320" font-size="15" letter-spacing="3" fill="#f89800">CUIDADO PARA QUEM VOCÊ AMA</text>
+  </g>
+</svg>

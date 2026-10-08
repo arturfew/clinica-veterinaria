@@ -1,28 +1,63 @@
-# Clínica Veterinária
+# Clínica Veterinária (web)
 
-## Descrição
-Sistema web para gestão de clínica veterinária, permitindo o acompanhamento e agendamento de consultas, visualização de serviços/profissionais e painel administrativo para gerenciamento dos atendimentos.
+App da disciplina de POS: cliente web em React para a API de agendamentos
 
-## Objetivo
-Permitir que o cliente web consuma a API de agendamentos do projeto Clínica Veterinária, oferecendo uma interface profissional e responsiva para pacientes/clientes e administradores.
+Feito a partir do *template* React do Vite, com [React Bootstrap](https://react-bootstrap.netlify.app/), [Bootstrap Icons](https://icons.getbootstrap.com/) e [React Router](https://reactrouter.com/).
 
-## Tecnologias Utilizadas
-- React 19[cite: 6]
-- Vite[cite: 6]
-- JavaScript[cite: 4]
-- React Router[cite: 6]
-- Oxlint[cite: 6]
-- Vercel[cite: 9]
+O app e a API são independentes: o app é só um site estático que conversa com a API pela internet.
 
-## Funcionalidades
-- Autenticação e perfil do usuário
-- Agendamento e histórico de consultas
-- Visualização de serviços e profissionais veterinários
-- Painel administrativo para gestão de agenda e solicitações
-- Integração com a API de agendamentos
+## Rodando
 
-## Estrutura Básica do Projeto
-- `src/` - Código-fonte da aplicação (componentes, rotas e páginas)[cite: 4]
-- `index.html` - Ponto de entrada HTML da aplicação[cite: 4]
-- `package.json` - Dependências e scripts do projeto[cite: 6]
-- `vercel.json` - Configuração para rotas no deploy da Vercel[cite: 9]
+- Instale as dependências:
+    - `npm install`
+- Copie o arquivo de exemplo de variáveis de ambiente:
+    - `cp .env.example .env`
+- Preencha o `.env` com o endereço da API e o slug da organização:
+    - `VITE_API_URL`: endereço da API, terminando em `/api`;
+    - `VITE_ORGANIZACAO`: slug da organização usada no cadastro e no login (`clinica-veterinaria`).
+- Rode o app:
+    - `npm run dev`
+- Acesse http://localhost:5173
+
+As variáveis são lidas pelo Vite (`import.meta.env`) em `src/api/client.js`. O `.env` não vai para o git.
+
+## Publicando na Vercel
+
+- Importe o repositório na [Vercel](https://vercel.com/): ela reconhece o projeto Vite sozinha (`npm run build`, pasta `dist`);
+- Em **Environment Variables**, defina `VITE_API_URL` e `VITE_ORGANIZACAO`;
+- Faça o *deploy*.
+
+As variáveis são lidas no momento do *build*: ao trocar alguma, faça o *deploy* de novo.
+
+O `vercel.json` faz todas as rotas abrirem o `index.html`. Sem ele, recarregar a página em um endereço como `/consultas/9` daria erro 404, porque essas rotas só existem dentro do React (React Router).
+
+## Organização do código
+
+```
+src/
+├── api/client.js      # fetch com o token, renovação automática e mensagens de erro
+├── AuthContext.js     # contexto com o usuário logado e as permissões (useAuth)
+├── AuthProvider.jsx   # login, logout e carregamento do usuário
+├── hooks/useApi.js    # useApi (buscar dados) e usePaginado (listas com "Carregar mais")
+├── formatos.js        # datas, horas e preços em pt-BR
+├── custom.scss        # cores do Bootstrap personalizadas
+├── components/        # peças reutilizadas: Menu, Layout, Erro, Carregando, ConsultaItem...
+└── pages/             # uma tela por arquivo
+    ├── agendar/       # fluxo de agendamento (C2 a C6)
+    └── admin/         # telas do administrador (A1 a A10)
+```
+
+As telas seguem os identificadores da especificação (E1, C1, A1...). O menu e os botões aparecem conforme as `permissoes` do usuário (`pode('api.confirmar_agendamento')`), nunca pelo nome do grupo.
+
+## Personalizando as cores
+
+As cores do Bootstrap são definidas em `src/custom.scss`, antes de importar o Bootstrap:
+
+```scss
+$primary: #0a2f5f;
+$warning: #f89800;
+
+@import 'bootstrap/scss/bootstrap';
+```
+
+Veja as outras variáveis em [Bootstrap: Sass](https://getbootstrap.com/docs/5.3/customize/sass/).
