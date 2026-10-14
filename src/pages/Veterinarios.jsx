@@ -1,4 +1,4 @@
-import { Alert, Card, Col, Row } from 'react-bootstrap'
+import { Alert, Card } from '@heroui/react'
 import { Link } from 'react-router-dom'
 import { Carregando } from '../components/Carregando'
 import { CarregarMais } from '../components/CarregarMais'
@@ -14,22 +14,24 @@ export function Veterinarios() {
   return (
     <>
       <h2 className="mb-4">Veterinários</h2>
-      {!recursos.carregando && recursos.itens.length === 0 && <Alert variant="info">Nenhum veterinário cadastrado.</Alert>}
-      <Row xs={1} md={2} lg={3} className="g-4">
+      {!recursos.carregando && recursos.itens.length === 0 && <Alert status="accent">Nenhum veterinário cadastrado.</Alert>}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {recursos.itens.map(recurso => (
-          <Col key={recurso.id}>
-            <Card as={Link} to={`/veterinarios/${recurso.id}`} className="h-100 text-decoration-none">
-              <Card.Body className="d-flex gap-3">
-                <Foto src={recurso.foto} tamanho={64} />
-                <div>
-                  <Card.Title>{recurso.nome}</Card.Title>
-                  <Card.Text className="text-secondary">{recurso.bio}</Card.Text>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
+          <div key={recurso.id}>
+            <Link to={`/veterinarios/${recurso.id}`} className="block text-inherit no-underline">
+              <Card className="h-full">
+                <Card.Content className="flex gap-3">
+                  <Foto src={recurso.foto} tamanho={64} />
+                  <div>
+                    <Card.Title>{recurso.nome}</Card.Title>
+                    <Card.Description className="text-muted">{recurso.bio}</Card.Description>
+                  </div>
+                </Card.Content>
+              </Card>
+            </Link>
+          </div>
         ))}
-      </Row>
+      </div>
       {recursos.carregando ? <Carregando /> : <CarregarMais lista={recursos} />}
     </>
   )

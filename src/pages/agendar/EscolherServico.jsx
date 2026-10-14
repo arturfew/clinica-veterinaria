@@ -1,4 +1,4 @@
-import { Alert, Card, Col, Row } from 'react-bootstrap'
+import { Alert, Card } from '@heroui/react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Carregando } from '../../components/Carregando'
 import { CarregarMais } from '../../components/CarregarMais'
@@ -22,32 +22,34 @@ export function EscolherServico() {
 
   return (
     <>
-      <small className="text-secondary">Passo 1 de 4</small>
+      <small className="text-muted">Passo 1 de 4</small>
       <h2 className="mb-4">Qual serviço?</h2>
-      {!servicos.carregando && servicos.itens.length === 0 && <Alert variant="info">Nenhum serviço disponível.</Alert>}
-      <Row xs={1} md={2} lg={3} className="g-4">
+      {!servicos.carregando && servicos.itens.length === 0 && <Alert status="accent">Nenhum serviço disponível.</Alert>}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {servicos.itens.map(servico => (
-          <Col key={servico.id}>
-            <Card as={Link} to={proximoPasso(servico)} className="h-100 text-decoration-none">
-              {servico.imagem ? (
-                <Card.Img variant="top" src={servico.imagem} />
-              ) : (
-                <div className="text-center bg-body-tertiary py-4">
-                  <i className="bi bi-heart-pulse display-4 text-secondary"></i>
-                </div>
-              )}
-              <Card.Body>
-                <Card.Title>{servico.nome}</Card.Title>
-                <Card.Text className="text-secondary">{servico.descricao}</Card.Text>
-              </Card.Body>
-              <Card.Footer className="d-flex justify-content-between">
-                <span><i className="bi bi-clock"></i> {servico.duracao_min} min</span>
-                <strong>{formatarPreco(servico.preco)}</strong>
-              </Card.Footer>
-            </Card>
-          </Col>
+          <div key={servico.id}>
+            <Link to={proximoPasso(servico)} className="block text-inherit no-underline">
+              <Card className="h-full">
+                {servico.imagem ? (
+                  <img src={servico.imagem} alt={servico.nome} className="w-full object-cover" />
+                ) : (
+                  <div className="bg-surface-secondary py-6 text-center">
+                    <i className="bi bi-heart-pulse text-4xl text-muted"></i>
+                  </div>
+                )}
+                <Card.Content>
+                  <Card.Title>{servico.nome}</Card.Title>
+                  <Card.Description className="text-muted">{servico.descricao}</Card.Description>
+                </Card.Content>
+                <Card.Footer className="flex justify-between">
+                  <span><i className="bi bi-clock"></i> {servico.duracao_min} min</span>
+                  <strong>{formatarPreco(servico.preco)}</strong>
+                </Card.Footer>
+              </Card>
+            </Link>
+          </div>
         ))}
-      </Row>
+      </div>
       {servicos.carregando ? <Carregando /> : <CarregarMais lista={servicos} />}
     </>
   )

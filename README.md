@@ -2,7 +2,7 @@
 
 App da disciplina de POS: cliente web em React para a API de agendamentos
 
-Feito a partir do *template* React do Vite, com [React Bootstrap](https://react-bootstrap.netlify.app/), [Bootstrap Icons](https://icons.getbootstrap.com/) e [React Router](https://reactrouter.com/).
+Feito a partir do *template* React do Vite, com [HeroUI v3](https://www.heroui.com/) (sobre [Tailwind CSS v4](https://tailwindcss.com/)), [Bootstrap Icons](https://icons.getbootstrap.com/) e [React Router](https://reactrouter.com/).
 
 O app e a API são independentes: o app é só um site estático que conversa com a API pela internet.
 
@@ -40,7 +40,7 @@ src/
 ├── AuthProvider.jsx   # login, logout e carregamento do usuário
 ├── hooks/useApi.js    # useApi (buscar dados) e usePaginado (listas com "Carregar mais")
 ├── formatos.js        # datas, horas e preços em pt-BR
-├── custom.scss        # cores do Bootstrap personalizadas
+├── heroui.css         # import do tema do HeroUI + cores da marca + tipografia
 ├── components/        # peças reutilizadas: Menu, Layout, Erro, Carregando, ConsultaItem...
 └── pages/             # uma tela por arquivo
     ├── agendar/       # fluxo de agendamento (C2 a C6)
@@ -49,15 +49,21 @@ src/
 
 As telas seguem os identificadores da especificação (E1, C1, A1...). O menu e os botões aparecem conforme as `permissoes` do usuário (`pode('api.confirmar_agendamento')`), nunca pelo nome do grupo.
 
-## Personalizando as cores
+## Componentes e cores
 
-As cores do Bootstrap são definidas em `src/custom.scss`, antes de importar o Bootstrap:
+Os componentes vêm do **[HeroUI v3](https://www.heroui.com/)** (`@heroui/react`), cujos estilos ficam no pacote separado `@heroui/styles`. O HeroUI v3 não usa mais o `<HeroUIProvider>` (isso era do v2) e é construído sobre o Tailwind CSS v4 — por isso o `vite.config.js` inclui o plugin `@tailwindcss/vite`.
 
-```scss
-$primary: #0a2f5f;
-$warning: #f89800;
+Componentes usados: `Alert`, `Button`, `Card`, `Checkbox`, `Chip`, `Description`, `Dropdown`, `FieldError`, `Form`, `Input`, `InputGroup`, `Label`, `ListBox`, `Modal`, `Select`, `Spinner`, `Switch`, `Tabs`, `TextArea` e `TextField`. O helper `buttonVariants` (de `@heroui/styles`) permite estilizar um `<Link>` como botão. Os ícones continuam sendo do *Bootstrap Icons* (`bi bi-...`).
 
-@import 'bootstrap/scss/bootstrap';
+As cores e a tipografia da marca ficam em `src/heroui.css`, que importa o tema do HeroUI e sobrescreve os *tokens* de cor (`--accent` é o azul-marinho `#0a2f5f`; `--warning`, o laranja `#f89800`) e a fonte (`Nunito`):
+
+```css
+@import "@heroui/styles";
+
+:root {
+  --accent: #0a2f5f;   /* azul-marinho da marca */
+  --warning: #f89800;  /* laranja da marca */
+}
 ```
 
-Veja as outras variáveis em [Bootstrap: Sass](https://getbootstrap.com/docs/5.3/customize/sass/).
+Veja os outros *tokens* em `node_modules/@heroui/styles/dist/themes/default/variables.css`.

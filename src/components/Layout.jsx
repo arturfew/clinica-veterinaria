@@ -1,4 +1,3 @@
-import { Container } from 'react-bootstrap'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { Carregando } from './Carregando'
@@ -15,11 +14,14 @@ export function Layout() {
   }
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-background">
       <Menu />
-      <Container className="my-4">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
         <Outlet />
-      </Container>
-    </>
+      </main>
+      <footer className="border-t border-separator py-6 text-center text-sm text-muted">
+        {usuario.organizacao.nome} · agendamentos online
+      </footer>
+    </div>
   )
 }

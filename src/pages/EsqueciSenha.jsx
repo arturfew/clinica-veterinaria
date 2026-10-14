@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form, Input, Label, TextField } from '@heroui/react'
 import { Link } from 'react-router-dom'
 import { mensagemDeErro, redefinirSenha } from '../api/client'
 
@@ -23,20 +23,20 @@ export function EsqueciSenha() {
     <>
       <h2 className="mb-4">Esqueci minha senha</h2>
       {enviado ? (
-        <Alert variant="success">
+        <Alert status="success">
           Se o e-mail estiver cadastrado, você receberá um link para criar uma nova senha.
         </Alert>
       ) : (
-        <Form onSubmit={handleSubmit}>
-          {erro && <Alert variant="danger">{erro}</Alert>}
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>E-mail</Form.Label>
-            <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-          </Form.Group>
-          <Button type="submit" className="w-100">Enviar link</Button>
+        <Form onSubmit={handleSubmit} className="space-y-4">
+          {erro && <Alert status="danger">{erro}</Alert>}
+          <TextField name="email" type="email" value={email} onChange={setEmail} isRequired>
+            <Label>E-mail</Label>
+            <Input />
+          </TextField>
+          <Button type="submit" variant="primary" fullWidth>Enviar link</Button>
         </Form>
       )}
-      <Link to="/login" className="d-block mt-3">Voltar para o login</Link>
+      <Link to="/login" className="block mt-3">Voltar para o login</Link>
     </>
   )
 }

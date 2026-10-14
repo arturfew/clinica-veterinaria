@@ -1,4 +1,5 @@
-import { Alert, Button, Card, Col, Row } from 'react-bootstrap'
+import { Alert, Card } from '@heroui/react'
+import { buttonVariants } from '@heroui/styles'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Carregando } from '../../components/Carregando'
 import { CarregarMais } from '../../components/CarregarMais'
@@ -16,44 +17,44 @@ export function EscolherVeterinario() {
 
   return (
     <>
-      <small className="text-secondary">Passo 2 de 4</small>
+      <small className="text-muted">Passo 2 de 4</small>
       <h2 className="mb-4">Com quem?</h2>
       {recursos.itens.length === 0 ? (
-        <Alert variant="info">Nenhum veterinário realiza este serviço.</Alert>
+        <Alert status="accent">Nenhum veterinário realiza este serviço.</Alert>
       ) : (
-        <Row xs={1} md={2} lg={3} className="g-4">
-          <Col>
-            <Card className="h-100">
-              <Card.Body className="d-flex gap-3">
-                <i className="bi bi-people-fill text-secondary display-5"></i>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <Card className="h-full">
+              <Card.Content className="flex gap-3">
+                <i className="bi bi-people-fill text-muted text-3xl"></i>
                 <div>
                   <Card.Title>Qualquer um</Card.Title>
-                  <Card.Text className="text-secondary">Mostra os horários livres de todos.</Card.Text>
-                  <Button as={Link} to={`/agendar/horario?servico=${servico}`}>Escolher</Button>
+                  <Card.Description className="text-muted">Mostra os horários livres de todos.</Card.Description>
+                  <Link to={`/agendar/horario?servico=${servico}`} className={buttonVariants({ variant: 'primary' })}>Escolher</Link>
                 </div>
-              </Card.Body>
+              </Card.Content>
             </Card>
-          </Col>
+          </div>
           {recursos.itens.map(recurso => (
-            <Col key={recurso.id}>
-              <Card className="h-100">
-                <Card.Body className="d-flex gap-3">
+            <div key={recurso.id}>
+              <Card className="h-full">
+                <Card.Content className="flex gap-3">
                   <Foto src={recurso.foto} tamanho={64} />
                   <div>
                     <Card.Title>{recurso.nome}</Card.Title>
-                    <Card.Text className="text-secondary">{recurso.bio}</Card.Text>
-                    <Button as={Link} to={`/agendar/horario?servico=${servico}&recurso=${recurso.id}`}>
+                    <Card.Description className="text-muted">{recurso.bio}</Card.Description>
+                    <Link to={`/agendar/horario?servico=${servico}&recurso=${recurso.id}`} className={buttonVariants({ variant: 'primary' })}>
                       Escolher
-                    </Button>
-                    <Button as={Link} to={`/veterinarios/${recurso.id}`} variant="link">
+                    </Link>
+                    <Link to={`/veterinarios/${recurso.id}`} className={buttonVariants({ variant: 'ghost' })}>
                       Ver avaliações
-                    </Button>
+                    </Link>
                   </div>
-                </Card.Body>
+                </Card.Content>
               </Card>
-            </Col>
+            </div>
           ))}
-        </Row>
+        </div>
       )}
       {recursos.carregando ? <Carregando /> : <CarregarMais lista={recursos} />}
     </>

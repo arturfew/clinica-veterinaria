@@ -1,13 +1,17 @@
-import { Badge } from 'react-bootstrap'
+import { Chip } from '@heroui/react'
 
 const STATUS = {
   solicitado: { cor: 'warning', texto: 'Solicitada' },
-  confirmado: { cor: 'primary', texto: 'Confirmada' },
+  confirmado: { cor: 'accent', texto: 'Confirmada' },
   concluido: { cor: 'success', texto: 'Concluída' },
-  cancelado: { cor: 'secondary', texto: 'Cancelada' },
+  cancelado: { cor: 'default', texto: 'Cancelada' },
 }
 
 export function StatusConsulta({ status }) {
-  const { cor, texto } = STATUS[status]
-  return <Badge bg={cor} text={cor === 'warning' ? 'dark' : undefined}>{texto}</Badge>
+  const { cor, texto } = STATUS[status] || { cor: 'default', texto: status }
+  return (
+    <Chip color={cor} variant="soft">
+      {texto}
+    </Chip>
+  )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Alert, Button, FieldError, Form, Input, Label, TextField } from '@heroui/react'
 import { Link } from 'react-router-dom'
 import { cadastrar, mensagemDeErro } from '../api/client'
 import { useAuth } from '../AuthContext'
@@ -31,24 +31,24 @@ export function Cadastro() {
   return (
     <>
       <h2 className="mb-4">Criar conta</h2>
-      {erro && <Alert variant="danger">{erro}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="nome">
-          <Form.Label>Nome</Form.Label>
-          <Form.Control value={nome} onChange={e => setNome(e.target.value)} isInvalid={!!erros.nome} required />
-          <Form.Control.Feedback type="invalid">{erros.nome?.join(' ')}</Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>E-mail</Form.Label>
-          <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} isInvalid={!!erros.email} required />
-          <Form.Control.Feedback type="invalid">{erros.email?.join(' ')}</Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="senha">
-          <Form.Label>Senha</Form.Label>
-          <Form.Control type="password" value={senha} onChange={e => setSenha(e.target.value)} isInvalid={!!erros.senha} required />
-          <Form.Control.Feedback type="invalid">{erros.senha?.join(' ')}</Form.Control.Feedback>
-        </Form.Group>
-        <Button type="submit" className="w-100" disabled={enviando}>Criar conta</Button>
+      {erro && <Alert status="danger">{erro}</Alert>}
+      <Form onSubmit={handleSubmit} className="space-y-4">
+        <TextField name="nome" value={nome} onChange={setNome} isRequired isInvalid={!!erros.nome}>
+          <Label>Nome</Label>
+          <Input />
+          <FieldError>{erros.nome?.join(' ')}</FieldError>
+        </TextField>
+        <TextField name="email" type="email" value={email} onChange={setEmail} isRequired isInvalid={!!erros.email}>
+          <Label>E-mail</Label>
+          <Input />
+          <FieldError>{erros.email?.join(' ')}</FieldError>
+        </TextField>
+        <TextField name="senha" type="password" value={senha} onChange={setSenha} isRequired isInvalid={!!erros.senha}>
+          <Label>Senha</Label>
+          <Input />
+          <FieldError>{erros.senha?.join(' ')}</FieldError>
+        </TextField>
+        <Button type="submit" variant="primary" fullWidth isDisabled={enviando}>Criar conta</Button>
       </Form>
       <p className="mt-3 mb-0">
         Já tem conta? <Link to="/login">Entrar</Link>

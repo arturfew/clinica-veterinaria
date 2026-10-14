@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Alert, Button, Card, FieldError, Form, Input, Label, TextField } from '@heroui/react'
 import { Link, useLocation } from 'react-router-dom'
+import { buttonVariants } from '@heroui/styles'
 import { api, mensagemDeErro } from '../api/client'
 import { useAuth } from '../AuthContext'
 import { Foto } from '../components/Foto'
@@ -38,50 +39,50 @@ export function Perfil() {
   }
 
   return (
-    <Row className="justify-content-center">
-      <Col md={8} lg={6}>
+    <div className="flex justify-center">
+      <div className="w-full max-w-xl">
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="text-center mb-4">
               <Foto src={usuario.foto} tamanho={96} />
               <h2 className="mt-2 mb-0">{usuario.nome}</h2>
-              <div className="text-secondary">{usuario.email}</div>
-              <div className="text-secondary">{usuario.organizacao.nome}</div>
+              <div className="text-muted">{usuario.email}</div>
+              <div className="text-muted">{usuario.organizacao.nome}</div>
             </div>
 
-            {erro && <Alert variant="danger">{erro}</Alert>}
-            {salvo && <Alert variant="success">Perfil atualizado.</Alert>}
-            {location.state?.mensagem && <Alert variant="success">{location.state.mensagem}</Alert>}
+            {erro && <Alert status="danger">{erro}</Alert>}
+            {salvo && <Alert status="success">Perfil atualizado.</Alert>}
+            {location.state?.mensagem && <Alert status="success">{location.state.mensagem}</Alert>}
 
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="nome">
-                <Form.Label>Nome</Form.Label>
-                <Form.Control value={nome} onChange={e => setNome(e.target.value)} isInvalid={!!erros.nome} required />
-                <Form.Control.Feedback type="invalid">{erros.nome?.join(' ')}</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="foto">
-                <Form.Label>Foto</Form.Label>
-                <Form.Control type="file" accept="image/*" onChange={e => setFoto(e.target.files[0])} isInvalid={!!erros.foto} />
-                <Form.Control.Feedback type="invalid">{erros.foto?.join(' ')}</Form.Control.Feedback>
-              </Form.Group>
-              <div className="d-flex gap-2">
-                <Button type="submit">Salvar</Button>
+            <Form onSubmit={handleSubmit} className="space-y-4">
+              <TextField name="nome" value={nome} onChange={setNome} isRequired isInvalid={!!erros.nome}>
+                <Label>Nome</Label>
+                <Input />
+                <FieldError>{erros.nome?.join(' ')}</FieldError>
+              </TextField>
+              <TextField name="foto" isInvalid={!!erros.foto}>
+                <Label>Foto</Label>
+                <input type="file" accept="image/*" onChange={e => setFoto(e.target.files[0])} className="block w-full text-sm text-muted" />
+                <FieldError>{erros.foto?.join(' ')}</FieldError>
+              </TextField>
+              <div className="flex gap-2">
+                <Button type="submit" variant="primary">Salvar</Button>
                 {usuario.foto && (
-                  <Button variant="outline-secondary" onClick={() => salvar({ foto: null })}>
+                  <Button variant="ghost" onPress={() => salvar({ foto: null })}>
                     Remover foto
                   </Button>
                 )}
-                <Button as={Link} to="/perfil/senha" variant="outline-primary" className="ms-auto">
+                <Link to="/perfil/senha" className={buttonVariants({ variant: 'outline', className: 'ms-auto' })}>
                   <i className="bi bi-key"></i> Alterar senha
-                </Button>
-                <Button variant="outline-danger" onClick={sair}>
+                </Link>
+                <Button variant="danger-soft" onPress={sair}>
                   <i className="bi bi-box-arrow-right"></i> Sair
                 </Button>
               </div>
             </Form>
-          </Card.Body>
+          </Card.Content>
         </Card>
-      </Col>
-    </Row>
+      </div>
+    </div>
   )
 }

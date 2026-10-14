@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Form } from 'react-bootstrap'
+import { Alert, Button, Card, Form, Label, TextArea, TextField } from '@heroui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import { Carregando } from '../components/Carregando'
@@ -31,27 +31,27 @@ export function Avaliar() {
 
   return (
     <Card>
-      <Card.Body>
+      <Card.Content>
         <h2>Avaliar consulta</h2>
-        <p className="text-secondary">
+        <p className="text-muted">
           {consulta.dados.servico_nome} com {consulta.dados.recurso_nome}, {formatarData(consulta.dados.inicio)}
         </p>
-        {erro && <Alert variant="danger">{erro}</Alert>}
+        {erro && <Alert status="danger">{erro}</Alert>}
         <Form onSubmit={handleSubmit}>
           <div className="mb-3">
             {[1, 2, 3, 4, 5].map(n => (
-              <Button key={n} variant="link" className="p-1 fs-2 text-warning" onClick={() => setNota(n)}>
+              <Button key={n} type="button" variant="ghost" className="p-1 text-2xl text-yellow-500" onPress={() => setNota(n)}>
                 <i className={n <= nota ? 'bi bi-star-fill' : 'bi bi-star'}></i>
               </Button>
             ))}
           </div>
-          <Form.Group className="mb-3" controlId="comentario">
-            <Form.Label>Comentário</Form.Label>
-            <Form.Control as="textarea" rows={3} value={comentario} onChange={e => setComentario(e.target.value)} />
-          </Form.Group>
-          <Button type="submit" disabled={nota === 0}>Enviar</Button>
+          <TextField name="comentario" value={comentario} onChange={setComentario} className="mb-3">
+            <Label>Comentário</Label>
+            <TextArea rows={3} />
+          </TextField>
+          <Button type="submit" variant="primary" isDisabled={nota === 0}>Enviar</Button>
         </Form>
-      </Card.Body>
+      </Card.Content>
     </Card>
   )
 }

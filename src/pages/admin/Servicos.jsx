@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Alert, Badge, Button, Image, ListGroup } from 'react-bootstrap'
+import { Alert, Chip } from '@heroui/react'
+import { buttonVariants } from '@heroui/styles'
 import { Link } from 'react-router-dom'
 import { Carregando } from '../../components/Carregando'
 import { CarregarMais } from '../../components/CarregarMais'
@@ -14,42 +15,40 @@ export function Servicos() {
 
   return (
     <>
-      <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <h2 className="me-auto mb-0">Serviços</h2>
         <FiltroAtivo valor={ativo} onChange={setAtivo} />
-        <Button as={Link} to="/admin/servicos/novo">
+        <Link to="/admin/servicos/novo" className={buttonVariants({ variant: 'primary' })}>
           <i className="bi bi-plus-lg"></i> Novo serviço
-        </Button>
+        </Link>
       </div>
 
       {servicos.erro && <Erro erro={servicos.erro} tentarDeNovo={servicos.recarregar} />}
       {!servicos.carregando && !servicos.erro && servicos.itens.length === 0 && (
-        <Alert variant="info">Cadastre o primeiro serviço.</Alert>
+        <Alert status="accent">Cadastre o primeiro serviço.</Alert>
       )}
-      <ListGroup>
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {servicos.itens.map(servico => (
-          <ListGroup.Item
+          <Link
             key={servico.id}
-            action
-            as={Link}
             to={`/admin/servicos/${servico.id}`}
-            className="d-flex align-items-center gap-3"
+            className="flex items-center gap-3 p-3 text-inherit no-underline hover:bg-default/50"
           >
             {servico.imagem ? (
-              <Image src={servico.imagem} width={64} rounded />
+              <img src={servico.imagem} width={64} className="rounded" />
             ) : (
-              <i className="bi bi-heart-pulse fs-2 text-secondary"></i>
+              <i className="bi bi-heart-pulse text-2xl text-muted"></i>
             )}
             <div className="me-auto">
-              <div className="fw-semibold">{servico.nome}</div>
-              <small className="text-secondary">
+              <div className="font-semibold">{servico.nome}</div>
+              <small className="text-muted">
                 {servico.duracao_min} min · {formatarPreco(servico.preco)}
               </small>
             </div>
-            {servico.ativo ? <Badge bg="success">Ativo</Badge> : <Badge bg="secondary">Inativo</Badge>}
-          </ListGroup.Item>
+            {servico.ativo ? <Chip color="success" variant="soft">Ativo</Chip> : <Chip color="default" variant="soft">Inativo</Chip>}
+          </Link>
         ))}
-      </ListGroup>
+      </div>
       {servicos.carregando ? <Carregando /> : <CarregarMais lista={servicos} />}
     </>
   )

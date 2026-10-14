@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Form } from 'react-bootstrap'
+import { Alert, Button, Card, Description, FieldError, Form, Input, Label, Switch, TextArea, TextField } from '@heroui/react'
+import { buttonVariants } from '@heroui/styles'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, mensagemDeErro } from '../../api/client'
 import { Carregando } from '../../components/Carregando'
@@ -72,58 +73,56 @@ function FormRecurso({ recurso }) {
 
   return (
     <Card>
-      <Card.Body>
-        <div className="d-flex align-items-center mb-4">
+      <Card.Content>
+        <div className="mb-4 flex items-center">
           <h2 className="me-auto mb-0">{recurso.id ? 'Editar veterinário' : 'Novo veterinário'}</h2>
           {recurso.id && (
-            <Button as={Link} to={`/admin/recursos/${recurso.id}/horarios`} variant="outline-primary">
+            <Link to={`/admin/recursos/${recurso.id}/horarios`} className={buttonVariants({ variant: 'outline' })}>
               <i className="bi bi-clock"></i> Horários
-            </Button>
+            </Link>
           )}
         </div>
-        {erro && <Alert variant="danger">{erro}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="nome">
-            <Form.Label>Nome</Form.Label>
-            <Form.Control value={nome} onChange={e => setNome(e.target.value)} isInvalid={!!erros.nome} required />
-            <Form.Control.Feedback type="invalid">{erros.nome?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="bio">
-            <Form.Label>Bio</Form.Label>
-            <Form.Control as="textarea" rows={3} value={bio} onChange={e => setBio(e.target.value)} isInvalid={!!erros.bio} />
-            <Form.Control.Feedback type="invalid">{erros.bio?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="capacidade">
-            <Form.Label>Capacidade</Form.Label>
-            <Form.Control type="number" value={capacidade} onChange={e => setCapacidade(e.target.value)} isInvalid={!!erros.capacidade} />
-            <Form.Text>Quantas consultas ao mesmo tempo (1 por padrão).</Form.Text>
-            <Form.Control.Feedback type="invalid">{erros.capacidade?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="foto">
-            <Form.Label>Foto</Form.Label>
-            <div className="d-flex align-items-center gap-3 mb-2">
+        {erro && <Alert status="danger">{erro}</Alert>}
+        <Form onSubmit={handleSubmit} className="space-y-4">
+          <TextField name="nome" value={nome} onChange={setNome} isRequired isInvalid={!!erros.nome}>
+            <Label>Nome</Label>
+            <Input />
+            <FieldError>{erros.nome?.join(' ')}</FieldError>
+          </TextField>
+          <TextField name="bio" value={bio} onChange={setBio} isInvalid={!!erros.bio}>
+            <Label>Bio</Label>
+            <TextArea rows={3} />
+            <FieldError>{erros.bio?.join(' ')}</FieldError>
+          </TextField>
+          <TextField name="capacidade" value={String(capacidade)} onChange={valor => setCapacidade(Number(valor))} isInvalid={!!erros.capacidade}>
+            <Label>Capacidade</Label>
+            <Input type="number" />
+            <Description>Quantas consultas o veterinário atende ao mesmo tempo (1 por padrão).</Description>
+            <FieldError>{erros.capacidade?.join(' ')}</FieldError>
+          </TextField>
+          <TextField name="foto" isInvalid={!!erros.foto}>
+            <Label>Foto</Label>
+            <div className="mb-2 flex items-center gap-3">
               <Foto src={foto} tamanho={64} />
               {foto && (
-                <Button variant="outline-secondary" size="sm" onClick={removerFoto}>Remover foto</Button>
+                <Button variant="ghost" size="sm" onPress={removerFoto}>Remover foto</Button>
               )}
             </div>
-            <Form.Control type="file" accept="image/*" onChange={e => setArquivo(e.target.files[0])} isInvalid={!!erros.foto} />
-            <Form.Control.Feedback type="invalid">{erros.foto?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Check
-            type="switch"
-            id="ativo"
-            className="mb-3"
-            label="Ativo (inativos não aparecem para os tutores)"
-            checked={ativo}
-            onChange={e => setAtivo(e.target.checked)}
-          />
-          <div className="d-flex gap-2">
-            <Button variant="outline-secondary" onClick={() => navigate('/admin/recursos')}>Voltar</Button>
-            <Button type="submit">Salvar</Button>
+            <input type="file" accept="image/*" onChange={e => setArquivo(e.target.files[0])} className="block w-full text-sm text-muted" />
+            <FieldError>{erros.foto?.join(' ')}</FieldError>
+          </TextField>
+          <Switch isSelected={ativo} onChange={setAtivo} className="mb-3">
+            <Switch.Content>
+              <Switch.Control><Switch.Thumb /></Switch.Control>
+              Ativo (inativos não aparecem para os tutores)
+            </Switch.Content>
+          </Switch>
+          <div className="flex gap-2">
+            <Button variant="ghost" onPress={() => navigate('/admin/recursos')}>Voltar</Button>
+            <Button type="submit" variant="primary">Salvar</Button>
           </div>
         </Form>
-      </Card.Body>
+      </Card.Content>
     </Card>
   )
 }

@@ -1,8 +1,8 @@
-import { Alert, Col, Form, ListGroup, Row } from 'react-bootstrap'
+import { Alert, ListBox, Select } from '@heroui/react'
 import { useSearchParams } from 'react-router-dom'
 import { buscarTodas } from '../../api/client'
-import { ConsultaItem } from '../../components/ConsultaItem'
 import { Carregando } from '../../components/Carregando'
+import { ConsultaItem } from '../../components/ConsultaItem'
 import { Erro } from '../../components/Erro'
 import { SeletorData } from '../../components/SeletorData'
 import { hoje } from '../../formatos'
@@ -29,28 +29,42 @@ export function Agenda() {
   return (
     <>
       <h2 className="mb-4">Agenda do dia</h2>
-      <Row>
-        <Col md={6}>
+      <div className="mb-4 grid gap-4 md:grid-cols-2">
+        <div>
           <SeletorData data={data} onChange={valor => mudar('data', valor)} />
-        </Col>
-        <Col md={6}>
-          <Form.Select className="mb-4" value={recurso} onChange={e => mudar('recurso', e.target.value)}>
-            <option value="">Todos os veterinários</option>
-            {recursos.dados?.map(r => (
-              <option key={r.id} value={r.id}>{r.nome}</option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
+        </div>
+        <div>
+          <Select
+            className="mb-4"
+            aria-label="Veterinário"
+            placeholder="Todos os veterinários"
+            selectedKey={recurso ? String(recurso) : 'todos'}
+            onSelectionChange={k => mudar('recurso', k === 'todos' || k === null ? '' : k)}
+          >
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item id="todos" textValue="Todos os veterinários">Todos os veterinários</ListBox.Item>
+                {recursos.dados?.map(r => (
+                  <ListBox.Item key={r.id} id={String(r.id)} textValue={r.nome}>{r.nome}</ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+      </div>
 
       {consultas.erro && <Erro erro={consultas.erro} tentarDeNovo={consultas.recarregar} />}
       {consultas.carregando && <Carregando />}
-      {consultas.dados?.length === 0 && <Alert variant="info">Nenhuma consulta neste dia.</Alert>}
-      <ListGroup>
+      {consultas.dados?.length === 0 && <Alert status="accent">Nenhuma consulta neste dia.</Alert>}
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {consultas.dados?.map(consulta => (
           <ConsultaItem key={consulta.id} consulta={consulta} mostrarTutor />
         ))}
-      </ListGroup>
+      </div>
     </>
   )
 }

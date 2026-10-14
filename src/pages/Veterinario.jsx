@@ -1,4 +1,5 @@
-import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
+import { Card, Chip } from '@heroui/react'
+import { buttonVariants } from '@heroui/styles'
 import { Link, useParams } from 'react-router-dom'
 import { buscarTodas } from '../api/client'
 import { useAuth } from '../AuthContext'
@@ -25,35 +26,35 @@ export function Veterinario() {
   return (
     <>
       <Card className="mb-4">
-        <Card.Body className="d-flex gap-4 align-items-center">
+        <Card.Content className="flex gap-4 items-center">
           <Foto src={foto} tamanho={120} />
           <div>
             <h2>{nome}</h2>
-            <p className="text-secondary">{bio}</p>
-            <div className="d-flex flex-wrap gap-1 mb-3">
+            <p className="text-muted">{bio}</p>
+            <div className="flex flex-wrap gap-1 mb-3">
               {servicos.dados.map(servico => (
-                <Badge key={servico.id} bg="secondary">{servico.nome}</Badge>
+                <Chip key={servico.id} color="default" variant="soft">{servico.nome}</Chip>
               ))}
             </div>
             {pode('api.add_agendamento') && (
-              <Button as={Link} to={`/agendar?recurso=${id}`}>
+              <Link to={`/agendar?recurso=${id}`} className={buttonVariants({ variant: 'primary' })}>
                 <i className="bi bi-calendar-plus"></i> Agendar com este veterinário
-              </Button>
+              </Link>
             )}
           </div>
-        </Card.Body>
+        </Card.Content>
       </Card>
 
       <h4>Avaliações</h4>
       {avaliacoes.erro && <Erro erro={avaliacoes.erro} tentarDeNovo={avaliacoes.recarregar} />}
       {!avaliacoes.carregando && !avaliacoes.erro && avaliacoes.itens.length === 0 && (
-        <p className="text-secondary">Ainda sem avaliações.</p>
+        <p className="text-muted">Ainda sem avaliações.</p>
       )}
-      <ListGroup>
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {avaliacoes.itens.map(avaliacao => (
           <Avaliacao key={avaliacao.id} avaliacao={avaliacao} />
         ))}
-      </ListGroup>
+      </div>
       {avaliacoes.carregando ? <Carregando /> : <CarregarMais lista={avaliacoes} />}
     </>
   )

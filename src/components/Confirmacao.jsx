@@ -1,16 +1,22 @@
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal } from '@heroui/react'
 
 export function Confirmacao({ show, titulo, mensagem, textoConfirmar = 'Confirmar', variante = 'primary', onConfirmar, onFechar }) {
   return (
-    <Modal show={show} onHide={onFechar} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{titulo}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{mensagem}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-secondary" onClick={onFechar}>Voltar</Button>
-        <Button variant={variante} onClick={onConfirmar}>{textoConfirmar}</Button>
-      </Modal.Footer>
+    <Modal isOpen={show} onOpenChange={open => { if (!open) onFechar() }}>
+      <Modal.Backdrop>
+        <Modal.Container>
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Heading>{titulo}</Modal.Heading>
+            </Modal.Header>
+            <Modal.Body>{mensagem}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="ghost" onPress={onFechar}>Voltar</Button>
+              <Button variant={variante} onPress={onConfirmar}>{textoConfirmar}</Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
     </Modal>
   )
 }

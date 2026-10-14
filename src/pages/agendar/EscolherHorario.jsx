@@ -1,4 +1,4 @@
-import { Alert, Button, Card } from 'react-bootstrap'
+import { Alert, Button, Card } from '@heroui/react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Carregando } from '../../components/Carregando'
 import { Erro } from '../../components/Erro'
@@ -38,10 +38,10 @@ export function EscolherHorario() {
 
   return (
     <>
-      <small className="text-secondary">Passo 3 de 4</small>
+      <small className="text-muted">Passo 3 de 4</small>
       <h2 className="mb-4">Quando?</h2>
 
-      {location.state?.erro && <Alert variant="warning">{location.state.erro}</Alert>}
+      {location.state?.erro && <Alert status="warning">{location.state.erro}</Alert>}
 
       <SeletorData data={data} onChange={mudarData} min={hoje()} />
 
@@ -49,9 +49,9 @@ export function EscolherHorario() {
       {carregando && <Carregando />}
 
       {dados && comHorarios.length === 0 && (
-        <Alert variant="info" className="d-flex align-items-center">
+        <Alert status="accent" className="flex items-center">
           Sem horários livres neste dia.
-          <Button variant="outline-primary" size="sm" className="ms-auto" onClick={() => mudarData(somarDias(data, 1))}>
+          <Button variant="outline" size="sm" className="ms-auto" onPress={() => mudarData(somarDias(data, 1))}>
             Ver o dia seguinte
           </Button>
         </Alert>
@@ -59,17 +59,17 @@ export function EscolherHorario() {
 
       {comHorarios.map(item => (
         <Card key={item.recurso.id} className="mb-3">
-          <Card.Header className="d-flex align-items-center gap-2">
+          <Card.Header className="flex items-center gap-2">
             <Foto src={item.recurso.foto} tamanho={32} />
             {item.recurso.nome}
           </Card.Header>
-          <Card.Body className="d-flex flex-wrap gap-2">
+          <Card.Content className="flex flex-wrap gap-2">
             {item.horarios.map(horario => (
-              <Button key={horario} variant="outline-primary" onClick={() => escolher(item.recurso.id, horario)}>
+              <Button key={horario} variant="outline" onPress={() => escolher(item.recurso.id, horario)}>
                 {formatarHora(horario)}
               </Button>
             ))}
-          </Card.Body>
+          </Card.Content>
         </Card>
       ))}
     </>

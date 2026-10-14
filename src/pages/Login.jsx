@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { mensagemDeErro } from '../api/client'
 import { useAuth } from '../AuthContext'
+import { Alert, Button, Form, Input, Label, TextField } from '@heroui/react'
 
 export function Login() {
   const { entrar } = useAuth()
@@ -26,19 +26,19 @@ export function Login() {
   return (
     <>
       <h2 className="mb-4">Entrar</h2>
-      {erro && <Alert variant="danger">{erro}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>E-mail</Form.Label>
-          <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="senha">
-          <Form.Label>Senha</Form.Label>
-          <Form.Control type="password" value={senha} onChange={e => setSenha(e.target.value)} required />
-        </Form.Group>
-        <Button type="submit" className="w-100" disabled={enviando}>Entrar</Button>
+      {erro && <Alert status="danger">{erro}</Alert>}
+      <Form onSubmit={handleSubmit} className="space-y-3">
+        <TextField name="email" type="email" value={email} onChange={setEmail} isRequired>
+          <Label>E-mail</Label>
+          <Input />
+        </TextField>
+        <TextField name="senha" type="password" value={senha} onChange={setSenha} isRequired>
+          <Label>Senha</Label>
+          <Input />
+        </TextField>
+        <Button type="submit" variant="primary" isDisabled={enviando}>Entrar</Button>
       </Form>
-      <div className="d-flex justify-content-between mt-3">
+      <div className="mt-3 flex justify-between">
         <Link to="/cadastro">Criar conta</Link>
         <Link to="/esqueci-senha">Esqueci minha senha</Link>
       </div>

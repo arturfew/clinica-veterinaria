@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Form, ListGroup } from 'react-bootstrap'
+import { Alert, Button, Card, Description, Form, Label, TextArea, TextField } from '@heroui/react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { api, mensagemDeErro } from '../../api/client'
 import { Carregando } from '../../components/Carregando'
@@ -49,38 +49,32 @@ export function Confirmar() {
 
   return (
     <>
-      <small className="text-secondary">Passo 4 de 4</small>
+      <small className="text-muted">Passo 4 de 4</small>
       <h2 className="mb-4">Confirmar agendamento</h2>
       <Card>
-        <ListGroup variant="flush">
-          <ListGroup.Item><strong>Serviço:</strong> {servico.dados.nome}</ListGroup.Item>
-          <ListGroup.Item><strong>Veterinário:</strong> {recurso.dados.nome}</ListGroup.Item>
-          <ListGroup.Item><strong>Dia:</strong> {formatarData(inicio)}</ListGroup.Item>
-          <ListGroup.Item>
+        <div className="divide-y divide-separator">
+          <div className="p-3"><strong>Serviço:</strong> {servico.dados.nome}</div>
+          <div className="p-3"><strong>Veterinário:</strong> {recurso.dados.nome}</div>
+          <div className="p-3"><strong>Dia:</strong> {formatarData(inicio)}</div>
+          <div className="p-3">
             <strong>Horário:</strong> {formatarHora(inicio)} às {formatarHora(fim)} ({servico.dados.duracao_min} min)
-          </ListGroup.Item>
-          <ListGroup.Item><strong>Preço:</strong> {formatarPreco(servico.dados.preco)}</ListGroup.Item>
-        </ListGroup>
-        <Card.Body>
-          {erro && <Alert variant="danger">{erro}</Alert>}
+          </div>
+          <div className="p-3"><strong>Preço:</strong> {formatarPreco(servico.dados.preco)}</div>
+        </div>
+        <Card.Content>
+          {erro && <Alert status="danger">{erro}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="observacoes">
-              <Form.Label>Observações</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={observacoes}
-                onChange={e => setObservacoes(e.target.value)}
-                placeholder="Ex.: Rex, cachorro de 3 anos: está sem comer há dois dias"
-              />
-              <Form.Text>Informe o nome, a espécie e a idade do pet.</Form.Text>
-            </Form.Group>
-            <div className="d-flex gap-2">
-              <Button variant="outline-secondary" onClick={() => navigate(-1)}>Voltar</Button>
-              <Button type="submit" disabled={enviando}>Confirmar</Button>
+            <TextField name="observacoes" value={observacoes} onChange={setObservacoes} className="mb-3">
+              <Label>Observações</Label>
+              <TextArea rows={3} placeholder="Ex.: Rex, cachorro de 3 anos: está sem comer há dois dias" />
+              <Description>Informe o nome, a espécie e a idade do pet.</Description>
+            </TextField>
+            <div className="flex gap-2">
+              <Button variant="ghost" onPress={() => navigate(-1)}>Voltar</Button>
+              <Button type="submit" variant="primary" isDisabled={enviando}>Confirmar</Button>
             </div>
           </Form>
-        </Card.Body>
+        </Card.Content>
       </Card>
     </>
   )

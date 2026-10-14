@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Alert, Button, Card, ListGroup } from 'react-bootstrap'
+import { Alert, Button, Card } from '@heroui/react'
+import { buttonVariants } from '@heroui/styles'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import { useAuth } from '../AuthContext'
@@ -42,55 +43,55 @@ export function Consulta() {
 
   return (
     <Card>
-      <Card.Header className="d-flex justify-content-between align-items-center">
+      <Card.Header className="flex justify-between items-center">
         <h4 className="mb-0">{consulta.servico_nome}</h4>
         <StatusConsulta status={consulta.status} />
       </Card.Header>
-      <ListGroup variant="flush">
-        <ListGroup.Item><strong>Veterinário:</strong> {consulta.recurso_nome}</ListGroup.Item>
+      <div className="divide-y divide-separator">
+        <div className="p-3"><strong>Veterinário:</strong> {consulta.recurso_nome}</div>
         {pode('api.view_agendamento') && (
-          <ListGroup.Item><strong>Tutor:</strong> {consulta.cliente_nome}</ListGroup.Item>
+          <div className="p-3"><strong>Tutor:</strong> {consulta.cliente_nome}</div>
         )}
-        <ListGroup.Item><strong>Dia:</strong> {formatarData(consulta.inicio)}</ListGroup.Item>
-        <ListGroup.Item>
+        <div className="p-3"><strong>Dia:</strong> {formatarData(consulta.inicio)}</div>
+        <div className="p-3">
           <strong>Horário:</strong> {formatarHora(consulta.inicio)} às {formatarHora(consulta.fim)} ({duracao} min)
-        </ListGroup.Item>
+        </div>
         {consulta.observacoes && (
-          <ListGroup.Item><strong>Observações:</strong> {consulta.observacoes}</ListGroup.Item>
+          <div className="p-3"><strong>Observações:</strong> {consulta.observacoes}</div>
         )}
         {consulta.nota && (
-          <ListGroup.Item>
+          <div className="p-3">
             <strong>Avaliação:</strong> <Estrelas nota={consulta.nota} />
             {consulta.comentario && <p className="mb-0 mt-1">{consulta.comentario}</p>}
-          </ListGroup.Item>
+          </div>
         )}
-      </ListGroup>
-      <Card.Body>
-        {erroAcao && <Alert variant="danger">{erroAcao}</Alert>}
-        <div className="d-flex gap-2">
-          <Button variant="outline-secondary" onClick={() => navigate(-1)}>Voltar</Button>
+      </div>
+      <Card.Content>
+        {erroAcao && <Alert status="danger">{erroAcao}</Alert>}
+        <div className="flex gap-2">
+          <Button variant="ghost" onPress={() => navigate(-1)}>Voltar</Button>
           {pode('api.avaliar_agendamento') && consulta.status === 'concluido' && !consulta.nota && (
-            <Button as={Link} to={`/consultas/${id}/avaliar`}>
+            <Link to={`/consultas/${id}/avaliar`} className={buttonVariants({ variant: 'primary' })}>
               <i className="bi bi-star"></i> Avaliar
-            </Button>
+            </Link>
           )}
           {pode('api.confirmar_agendamento') && consulta.status === 'solicitado' && (
-            <Button variant="success" onClick={() => setAcao('confirmar')}>
+            <Button variant="primary" onPress={() => setAcao('confirmar')}>
               <i className="bi bi-check-lg"></i> Confirmar
             </Button>
           )}
           {pode('api.concluir_agendamento') && consulta.status === 'confirmado' && (
-            <Button variant="success" onClick={() => setAcao('concluir')}>
+            <Button variant="primary" onPress={() => setAcao('concluir')}>
               <i className="bi bi-check2-all"></i> Concluir
             </Button>
           )}
           {pode('api.cancelar_agendamento') && ativa && (
-            <Button variant="outline-danger" className="ms-auto" onClick={() => setAcao('cancelar')}>
+            <Button variant="danger-soft" className="ms-auto" onPress={() => setAcao('cancelar')}>
               Cancelar
             </Button>
           )}
         </div>
-      </Card.Body>
+      </Card.Content>
       <ConfirmarAcao acao={acao} onConfirmar={confirmarAcao} onFechar={() => setAcao(null)} />
     </Card>
   )

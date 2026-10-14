@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Col, Form, ListGroup, Row } from 'react-bootstrap'
+import { ListBox, Select } from '@heroui/react'
 import { buscarTodas } from '../../api/client'
 import { Avaliacao } from '../../components/Avaliacao'
 import { Carregando } from '../../components/Carregando'
@@ -20,34 +20,62 @@ export function Avaliacoes() {
   return (
     <>
       <h2 className="mb-4">Avaliações</h2>
-      <Row className="mb-4 g-2">
-        <Col md={8}>
-          <Form.Select value={recurso} onChange={e => setRecurso(e.target.value)}>
-            <option value="">Todos os veterinários</option>
-            {recursos.dados?.map(r => (
-              <option key={r.id} value={r.id}>{r.nome}</option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col md={4}>
-          <Form.Select value={nota} onChange={e => setNota(e.target.value)}>
-            <option value="">Todas as notas</option>
-            {[5, 4, 3, 2, 1].map(n => (
-              <option key={n} value={n}>{n} {n === 1 ? 'estrela' : 'estrelas'}</option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
+      <div className="mb-4 grid gap-2 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <Select
+            aria-label="Veterinário"
+            placeholder="Todos os veterinários"
+            selectedKey={recurso ? String(recurso) : 'todos'}
+            onSelectionChange={k => setRecurso(k === 'todos' || k === null ? '' : k)}
+          >
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item id="todos" textValue="Todos os veterinários">Todos os veterinários</ListBox.Item>
+                {recursos.dados?.map(r => (
+                  <ListBox.Item key={r.id} id={String(r.id)} textValue={r.nome}>{r.nome}</ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+        <div>
+          <Select
+            aria-label="Nota"
+            placeholder="Todas as notas"
+            selectedKey={nota ? String(nota) : 'todos'}
+            onSelectionChange={k => setNota(k === 'todos' || k === null ? '' : k)}
+          >
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item id="todos" textValue="Todas as notas">Todas as notas</ListBox.Item>
+                {[5, 4, 3, 2, 1].map(n => (
+                  <ListBox.Item key={n} id={String(n)} textValue={`${n} ${n === 1 ? 'estrela' : 'estrelas'}`}>
+                    {n} {n === 1 ? 'estrela' : 'estrelas'}
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+      </div>
 
       {avaliacoes.erro && <Erro erro={avaliacoes.erro} tentarDeNovo={avaliacoes.recarregar} />}
       {!avaliacoes.carregando && !avaliacoes.erro && avaliacoes.itens.length === 0 && (
-        <p className="text-secondary">Ainda sem avaliações.</p>
+        <p className="text-muted">Ainda sem avaliações.</p>
       )}
-      <ListGroup>
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {avaliacoes.itens.map(avaliacao => (
           <Avaliacao key={avaliacao.id} avaliacao={avaliacao} />
         ))}
-      </ListGroup>
+      </div>
       {avaliacoes.carregando ? <Carregando /> : <CarregarMais lista={avaliacoes} />}
     </>
   )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, ListGroup } from 'react-bootstrap'
+import { Alert, Button } from '@heroui/react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../../api/client'
 import { Carregando } from '../../components/Carregando'
@@ -34,33 +34,33 @@ export function AConfirmar() {
   return (
     <>
       <h2 className="mb-4">A confirmar</h2>
-      {erroAcao && <Alert variant="danger">{erroAcao}</Alert>}
+      {erroAcao && <Alert status="danger">{erroAcao}</Alert>}
       {!pedidos.carregando && pedidos.itens.length === 0 && (
-        <Alert variant="success">Nenhum pedido para confirmar.</Alert>
+        <Alert status="success">Nenhum pedido para confirmar.</Alert>
       )}
-      <ListGroup>
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {pedidos.itens.map(consulta => (
-          <ListGroup.Item key={consulta.id} className="d-flex flex-wrap align-items-center gap-3">
+          <div key={consulta.id} className="flex flex-wrap items-center gap-3 p-3">
             <div className="text-center">
-              <div className="fw-bold">{formatarHora(consulta.inicio)}</div>
-              <small className="text-secondary">{formatarData(consulta.inicio)}</small>
+              <div className="font-bold">{formatarHora(consulta.inicio)}</div>
+              <small className="text-muted">{formatarData(consulta.inicio)}</small>
             </div>
             <div className="me-auto">
-              <Link to={`/consultas/${consulta.id}`} className="fw-semibold">{consulta.servico_nome}</Link>
-              <div><small className="text-secondary">{consulta.recurso_nome} · {consulta.cliente_nome}</small></div>
-              {consulta.observacoes && <small className="fst-italic">{consulta.observacoes}</small>}
+              <Link to={`/consultas/${consulta.id}`} className="font-semibold">{consulta.servico_nome}</Link>
+              <div><small className="text-muted">{consulta.recurso_nome} · {consulta.cliente_nome}</small></div>
+              {consulta.observacoes && <small className="italic">{consulta.observacoes}</small>}
             </div>
-            <div className="d-flex gap-2">
-              <Button variant="success" size="sm" onClick={() => setPendente({ id: consulta.id, acao: 'confirmar' })}>
+            <div className="flex gap-2">
+              <Button variant="primary" size="sm" onPress={() => setPendente({ id: consulta.id, acao: 'confirmar' })}>
                 <i className="bi bi-check-lg"></i> Confirmar
               </Button>
-              <Button variant="outline-danger" size="sm" onClick={() => setPendente({ id: consulta.id, acao: 'cancelar' })}>
+              <Button variant="danger-soft" size="sm" onPress={() => setPendente({ id: consulta.id, acao: 'cancelar' })}>
                 Cancelar
               </Button>
             </div>
-          </ListGroup.Item>
+          </div>
         ))}
-      </ListGroup>
+      </div>
       {pedidos.carregando ? <Carregando /> : <CarregarMais lista={pedidos} />}
 
       <ConfirmarAcao

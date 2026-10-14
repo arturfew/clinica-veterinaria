@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Alert, Button, Card, FieldError, Form, Input, Label, TextField } from '@heroui/react'
 import { useNavigate } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 
@@ -38,36 +38,36 @@ export function AlterarSenha() {
   }
 
   return (
-    <Row className="justify-content-center">
-      <Col md={8} lg={6}>
+    <div className="flex justify-center">
+      <div className="w-full max-w-xl">
         <Card>
-          <Card.Body>
+          <Card.Content>
             <h2 className="mb-4">Alterar senha</h2>
-            {erro && <Alert variant="danger">{erro}</Alert>}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="senhaAtual">
-                <Form.Label>Senha atual</Form.Label>
-                <Form.Control type="password" value={senhaAtual} onChange={e => setSenhaAtual(e.target.value)} isInvalid={!!erros.senha_atual} required />
-                <Form.Control.Feedback type="invalid">{erros.senha_atual?.join(' ')}</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="novaSenha">
-                <Form.Label>Nova senha</Form.Label>
-                <Form.Control type="password" value={novaSenha} onChange={e => setNovaSenha(e.target.value)} isInvalid={!!erros.nova_senha} required />
-                <Form.Control.Feedback type="invalid">{erros.nova_senha?.join(' ')}</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="confirmacao">
-                <Form.Label>Confirme a nova senha</Form.Label>
-                <Form.Control type="password" value={confirmacao} onChange={e => setConfirmacao(e.target.value)} isInvalid={!!erros.confirmacao} required />
-                <Form.Control.Feedback type="invalid">{erros.confirmacao?.join(' ')}</Form.Control.Feedback>
-              </Form.Group>
-              <div className="d-flex gap-2">
-                <Button variant="outline-secondary" onClick={() => navigate('/perfil')}>Cancelar</Button>
-                <Button type="submit" disabled={enviando}>Salvar</Button>
+            {erro && <Alert status="danger">{erro}</Alert>}
+            <Form onSubmit={handleSubmit} className="space-y-4">
+              <TextField name="senhaAtual" type="password" value={senhaAtual} onChange={setSenhaAtual} isRequired isInvalid={!!erros.senha_atual}>
+                <Label>Senha atual</Label>
+                <Input />
+                <FieldError>{erros.senha_atual?.join(' ')}</FieldError>
+              </TextField>
+              <TextField name="novaSenha" type="password" value={novaSenha} onChange={setNovaSenha} isRequired isInvalid={!!erros.nova_senha}>
+                <Label>Nova senha</Label>
+                <Input />
+                <FieldError>{erros.nova_senha?.join(' ')}</FieldError>
+              </TextField>
+              <TextField name="confirmacao" type="password" value={confirmacao} onChange={setConfirmacao} isRequired isInvalid={!!erros.confirmacao}>
+                <Label>Confirme a nova senha</Label>
+                <Input />
+                <FieldError>{erros.confirmacao?.join(' ')}</FieldError>
+              </TextField>
+              <div className="flex gap-2">
+                <Button variant="ghost" onPress={() => navigate('/perfil')}>Cancelar</Button>
+                <Button type="submit" variant="primary" isDisabled={enviando}>Salvar</Button>
               </div>
             </Form>
-          </Card.Body>
+          </Card.Content>
         </Card>
-      </Col>
-    </Row>
+      </div>
+    </div>
   )
 }

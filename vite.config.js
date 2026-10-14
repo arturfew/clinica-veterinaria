@@ -1,16 +1,9 @@
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // o Sass do Bootstrap 5 ainda usa recursos antigos: esconde os avisos
-        quietDeps: true,
-        silenceDeprecations: ['import'],
-      },
-    },
-  },
+  // tailwindcss(): o HeroUI v3 é construído sobre o Tailwind CSS v4.
+  plugins: [react(), tailwindcss()],
 })

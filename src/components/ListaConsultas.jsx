@@ -1,8 +1,7 @@
-import { ListGroup } from 'react-bootstrap'
 import { usePaginado } from '../hooks/useApi'
-import { ConsultaItem } from './ConsultaItem'
 import { Carregando } from './Carregando'
 import { CarregarMais } from './CarregarMais'
+import { ConsultaItem } from './ConsultaItem'
 import { Erro } from './Erro'
 
 export function ListaConsultas({ caminho, vazio = 'Nenhuma consulta aqui.', mostrarTutor = false }) {
@@ -12,12 +11,12 @@ export function ListaConsultas({ caminho, vazio = 'Nenhuma consulta aqui.', most
 
   return (
     <>
-      {!consultas.carregando && consultas.itens.length === 0 && <p className="text-secondary">{vazio}</p>}
-      <ListGroup>
+      {!consultas.carregando && consultas.itens.length === 0 && <p className="text-muted">{vazio}</p>}
+      <div className="divide-y divide-separator overflow-hidden rounded-xl border border-separator bg-surface shadow-sm">
         {consultas.itens.map(consulta => (
           <ConsultaItem key={consulta.id} consulta={consulta} mostrarTutor={mostrarTutor} />
         ))}
-      </ListGroup>
+      </div>
       {consultas.carregando ? <Carregando /> : <CarregarMais lista={consultas} />}
     </>
   )

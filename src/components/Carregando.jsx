@@ -1,9 +1,9 @@
-import { Spinner } from 'react-bootstrap'
+import { Spinner } from '@heroui/react'
 
 export function Carregando() {
   return (
     <div className="text-center my-5">
-      <Spinner animation="border" variant="primary" />
+      <Spinner />
     </div>
   )
 }

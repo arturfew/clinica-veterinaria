@@ -1,0 +1,89 @@
+/*
+ * Estilos do HeroUI.
+ *
+ * O HeroUI v3 NÃO traz o CSS junto dos componentes: ele vive no pacote
+ * separado `@heroui/styles`. Precisamos importá-lo UMA vez, globalmente,
+ * e ele já inclui o Tailwind CSS v4 e o tema (`--radius`, `--accent`, etc.).
+ */
+@import "@heroui/styles";
+
+/*
+ * Paleta de cores da marca da clínica (azul-marinho + laranja).
+ *
+ * Sobrescreve o tema claro padrão do HeroUI mantendo os tokens. As
+ * declarações sem camada vencem as do `@layer theme`/`@layer base` do HeroUI.
+ */
+:root {
+  /* Base */
+  --background: #f4f7fb;
+  --foreground: #0c2547;
+
+  /* Superfícies (cards, tabelas...) */
+  --surface: #ffffff;
+  --surface-foreground: #0c2547;
+  --surface-secondary: #e9eff7;
+  --surface-secondary-foreground: #0c2547;
+  --surface-tertiary: #dde7f2;
+  --surface-tertiary-foreground: #0c2547;
+
+  /* Overlays (popovers, menus, modais) */
+  --overlay: #ffffff;
+  --overlay-foreground: #0c2547;
+
+  /* Neutros */
+  --muted: #5b7291;
+  --default: #e6edf6;
+  --default-foreground: #0c2547;
+
+  /* Cor principal (acento) */
+  --accent: #0a2f5f;
+  --accent-foreground: #ffffff;
+  --accent-hover: #0d3d78;
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --accent-soft-foreground: #0a2f5f;
+  --accent-soft-hover: color-mix(in oklab, var(--accent) 18%, transparent);
+
+  /* Aviso (laranja da marca) */
+  --warning: #f89800;
+  --warning-foreground: #3a2a00;
+
+  /* Campos de formulário */
+  --field-background: #ffffff;
+
+  /* Separações e bordas */
+  --separator: #dbe4ef;
+  --border: #cdd9e8;
+  --separator-secondary: #cfdaea;
+  --separator-tertiary: #c2d0e2;
+  --border-secondary: #bccbdd;
+  --border-tertiary: #a9bcd4;
+}
+
+/*
+ * Tipografia da clínica: Nunito (carregada no index.html) deixa o app com
+ * uma cara própria, mais acolhedora do que a fonte padrão do sistema.
+ */
+@theme {
+  --font-sans: 'Nunito', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/*
+ * Detalhes de marca: títulos na cor principal e um pequeno traço laranja
+ * ao lado dos títulos das telas internas, para reforçar a identidade.
+ */
+main h2 {
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+main h2::before {
+  content: '';
+  display: inline-block;
+  width: 0.3rem;
+  height: 1em;
+  margin-right: 0.55rem;
+  border-radius: 999px;
+  background: var(--warning);
+  vertical-align: -0.12em;
+}
+

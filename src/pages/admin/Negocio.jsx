@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Card, Form, Image } from 'react-bootstrap'
+import { Alert, Button, Card, FieldError, Form, Input, Label, TextArea, TextField } from '@heroui/react'
 import { api, mensagemDeErro } from '../../api/client'
 import { useAuth } from '../../AuthContext'
 import { Carregando } from '../../components/Carregando'
@@ -53,41 +53,41 @@ function FormNegocio({ organizacao }) {
 
   return (
     <Card>
-      <Card.Body>
+      <Card.Content>
         <h2 className="mb-4">Dados do negócio</h2>
-        {erro && <Alert variant="danger">{erro}</Alert>}
-        {salvo && <Alert variant="success">Dados salvos.</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="nome">
-            <Form.Label>Nome</Form.Label>
-            <Form.Control value={nome} onChange={e => setNome(e.target.value)} isInvalid={!!erros.nome} required />
-            <Form.Control.Feedback type="invalid">{erros.nome?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="descricao">
-            <Form.Label>Descrição</Form.Label>
-            <Form.Control as="textarea" rows={3} value={descricao} onChange={e => setDescricao(e.target.value)} isInvalid={!!erros.descricao} />
-            <Form.Control.Feedback type="invalid">{erros.descricao?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="logo">
-            <Form.Label>Logo</Form.Label>
+        {erro && <Alert status="danger">{erro}</Alert>}
+        {salvo && <Alert status="success">Dados salvos.</Alert>}
+        <Form onSubmit={handleSubmit} className="space-y-4">
+          <TextField name="nome" value={nome} onChange={setNome} isRequired isInvalid={!!erros.nome}>
+            <Label>Nome</Label>
+            <Input />
+            <FieldError>{erros.nome?.join(' ')}</FieldError>
+          </TextField>
+          <TextField name="descricao" value={descricao} onChange={setDescricao} isInvalid={!!erros.descricao}>
+            <Label>Descrição</Label>
+            <TextArea rows={3} />
+            <FieldError>{erros.descricao?.join(' ')}</FieldError>
+          </TextField>
+          <TextField name="logo" isInvalid={!!erros.logo}>
+            <Label>Logo</Label>
             {logo && (
               <div className="mb-2">
-                <Image src={logo} width={200} thumbnail />
+                <img src={logo} width={200} className="rounded border border-separator p-1" />
               </div>
             )}
-            <Form.Control type="file" accept="image/*" onChange={e => setArquivo(e.target.files[0])} isInvalid={!!erros.logo} />
-            <Form.Control.Feedback type="invalid">{erros.logo?.join(' ')}</Form.Control.Feedback>
-          </Form.Group>
-          <div className="d-flex gap-2">
-            <Button type="submit">Salvar</Button>
+            <input type="file" accept="image/*" onChange={e => setArquivo(e.target.files[0])} className="block w-full text-sm text-muted" />
+            <FieldError>{erros.logo?.join(' ')}</FieldError>
+          </TextField>
+          <div className="flex gap-2">
+            <Button type="submit" variant="primary">Salvar</Button>
             {logo && (
-              <Button variant="outline-secondary" onClick={() => salvar({ logo: null })}>
+              <Button variant="ghost" onPress={() => salvar({ logo: null })}>
                 Remover logo
               </Button>
             )}
           </div>
         </Form>
-      </Card.Body>
+      </Card.Content>
     </Card>
   )
 }
